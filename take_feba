@@ -1,0 +1,9 @@
+#!/bin/sh
+
+
+cd /home/pnz/FEBA
+#rm *.csv
+
+wget --user=mnmeteo --password=S5Dix3Yb ftp://192.168.1.115/*.*
+
+

@@ -6,6 +6,7 @@ use File::Copy qw(move);
 use utf8;
 use DateTime::Format::Strptime;
 
+$HM= "/home/pnz/FEBA/";
 
 $db = DBI->connect("DBI:Pg:host=localhost;dbname=weather","weather","31415") or die "No access to database: $!";
 
@@ -29,9 +30,11 @@ $query_update = $db->prepare("$update");
 	$query = $db->prepare("$select");
 	$query->execute();
 	
-	$folder = $_timeM . '---' . $_time.'.csv';
+	#$folder = $HM . $_timeM . '---' . $_time.'.txt';
 
-	move $_time.'.csv', $folder;
+	#move  $_time.'.txt', $folder;
+$folder = $HM . $_time.'.csv';
+	print(" folder is ". $folder ."\n");
 
 	if ($query->rows >0){
 	$i = 0;	
@@ -48,7 +51,8 @@ $query_update = $db->prepare("$update");
 		utf8::decode($typemeasure);
 
 		if (( $typemeasure eq "бензол") || ( $typemeasure eq 'толуол') || ( $typemeasure eq 'этилбензол') || ( $typemeasure eq 'хлорбензол')
-		| ( $typemeasure eq 'м,п-ксилол') || ( $typemeasure eq 'о-ксилол') || ( $typemeasure eq 'стирол') || ( $typemeasure eq 'фенол'))
+		|| ( $typemeasure eq 'м,п-ксилол') || ( $typemeasure eq 'о-ксилол') || ( $typemeasure eq 'стирол') || ( $typemeasure eq 'фенол')
+		|| ( $typemeasure eq 'м-ксилол')|| ( $typemeasure eq 'п-ксилол'))
 		{
 		
 		$j = 0;
@@ -87,6 +91,7 @@ $query_update = $db->prepare("$update");
 				 $TL = $data[2];
 				 $EBZ = $data[3];
 				 $MPXL = $data[4];
+				 $PXL = $data[9];
 				 $STR = $data[5];
 				 $OXL = $data[6];
 				 $FNL = $data[7];
@@ -113,6 +118,14 @@ $query_update = $db->prepare("$update");
 				    if ( $typemeasure eq 'м,п-ксилол'){
 					$query_ins->execute($station_id, $serialnum, $date_time, 'м,п-ксилол', $MPXL, 'false');
 					$measure = $MPXL;
+					}
+				    if ( $typemeasure eq 'м-ксилол'){	
+					$query_ins->execute($station_id, $serialnum, $date_time, 'м-ксилол', $MPXL, 'false');
+					$measure = $MPXL;
+					}
+ 				    if ( $typemeasure eq 'п-ксилол'){
+					$query_ins->execute($station_id, $serialnum, $date_time, 'п-ксилол', $PXL, 'false');
+					$measure = $PXL;
 					}
 				    if ( $typemeasure eq 'о-ксилол'){
 					$query_ins->execute($station_id, $serialnum, $date_time, 'о-ксилол', $OXL, 'false');
@@ -146,10 +159,11 @@ $query_update = $db->prepare("$update");
 	 }
 
 		print ("\nData of ". ($i) . " sensors have been added of ". $station_id." station\n" );
-	
+
+		rename   $folder, $HM . $_time.'.old';
 	
 	   $query->finish;
-	   #$query_update->finish;
+	   $query_update->finish;
 	   $query_ins ->finish;
     }
 	#
