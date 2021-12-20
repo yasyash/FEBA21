@@ -6,7 +6,8 @@ use File::Copy qw(move);
 use utf8;
 use DateTime::Format::Strptime;
 
-$HM= "/home/pnz/FEBA/";
+#$HM= "/home/pnz/FEBA/";
+$HM= "/home/inote/FEBA/";
 
 $db = DBI->connect("DBI:Pg:host=localhost;dbname=weather","weather","31415") or die "No access to database: $!";
 
@@ -91,11 +92,11 @@ $folder = $HM . $_time.'.csv';
 				 $TL = $data[2];
 				 $EBZ = $data[3];
 				 $MPXL = $data[4];
-				 $PXL = $data[9];
+				 $PXL = $data[8];
 				 $STR = $data[5];
 				 $OXL = $data[6];
-				 $FNL = $data[7];
-				 $CLBZ = $data[8];
+				 $FNL = $data[9];
+				 $CLBZ = $data[7];
 					
 					$j++;
 

@@ -4,6 +4,6 @@
 cd /home/pnz/FEBA
 #rm *.csv
 
-wget --user=mnmeteo --password=S5Dix3Yb ftp://192.168.1.115/*.*
+#wget --user=mnmeteo --password=S5Dix3Yb ftp://192.168.1.115/*.*
 
-
+wget -v --user=mnmeteo --password=Dfdbkjy5 ftp://195.209.37.54:32/*.*
